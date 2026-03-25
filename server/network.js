@@ -13,7 +13,7 @@ function isValidIPv4(ip) {
 }
 
 function parseInterfaces(output) {
-  const lines = output.split('\n').slice(3);
+  const lines = output.replace(/\r/g, '').split('\n').slice(3);
   const interfaces = [];
   for (const line of lines) {
     const match = line.match(/^\s*(\d+)\s+\d+\s+\d+\s+(\S+)\s+(.+)$/);
@@ -23,6 +23,8 @@ function parseInterfaces(output) {
     if (state !== 'connected') continue;
     if (trimmedName.toLowerCase().includes('loopback')) continue;
     if (trimmedName.toLowerCase().startsWith('vethernet')) continue;
+    if (trimmedName.toLowerCase().includes('nordlynx')) continue;
+    if (trimmedName.toLowerCase().includes('openvpn')) continue;
     interfaces.push({ idx: parseInt(idx), name: trimmedName, state });
   }
   return interfaces;
