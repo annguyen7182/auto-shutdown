@@ -81,7 +81,7 @@ async function ensureFirewallRule(port) {
   await execFileAsync('netsh', [
     'advfirewall', 'firewall', 'add', 'rule',
     `name=${ruleName}`, 'dir=in', 'action=allow',
-    'protocol=TCP', `localport=${port}`, 'profile=private',
+    'protocol=TCP', `localport=${port}`, 'profile=any',
   ]);
 }
 

@@ -51,7 +51,7 @@ function createRoutes(app, options = {}) {
   }
 
   app.post('/api/sleep', (req, res) => {
-    execPower('powershell', ['-Command', '[System.Windows.Forms.Application]::SetSuspendState("Suspend", $true, $false)'], res);
+    execPower('powershell', ['-Command', 'Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.Application]::SetSuspendState("Suspend", $true, $false)'], res);
   });
 
   app.post('/api/shutdown', (req, res) => {
