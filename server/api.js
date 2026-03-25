@@ -8,14 +8,24 @@ const DEBOUNCE_MS = 3000;
 
 function getLocalIp() {
   const nets = os.networkInterfaces();
+  // Prefer Wi-Fi/Ethernet over VPN/virtual interfaces
+  const preferred = ['wi-fi', 'wifi', 'ethernet', 'eth0', 'en0', 'wlan'];
+  const vpnLike = ['nordlynx', 'tun', 'tap', 'vpn', 'vethernet', 'docker', 'wsl'];
+  let fallback = null;
+
   for (const name of Object.keys(nets)) {
     for (const net of nets[name]) {
-      if (net.family === 'IPv4' && !net.internal) {
-        return net.address;
-      }
+      if (net.family !== 'IPv4' || net.internal) continue;
+      const lower = name.toLowerCase();
+      // Skip VPN/virtual interfaces
+      if (vpnLike.some(v => lower.includes(v))) continue;
+      // Prefer known physical interface names
+      if (preferred.some(p => lower.includes(p))) return net.address;
+      // Keep first non-VPN as fallback
+      if (!fallback) fallback = net.address;
     }
   }
-  return '127.0.0.1';
+  return fallback || '127.0.0.1';
 }
 
 function createRoutes(app, options = {}) {
