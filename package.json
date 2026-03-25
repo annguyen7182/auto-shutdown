@@ -13,7 +13,7 @@
     "assets": [
       "public/**/*",
       "resources/**/*",
-      "node_modules/node-systray/tray_*"
+      "node_modules/systray2/tray_*"
     ],
     "targets": [
       "node18-win-x64"
@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "express": "^5.2.1",
-    "node-systray": "*",
-    "node-windows": "^1.0.0-beta.8"
+    "node-windows": "^1.0.0-beta.8",
+    "systray2": "^2.1.4"
   },
   "devDependencies": {
     "pkg": "^5.8.1"
