@@ -1,0 +1,30 @@
+{
+  "name": "auto-shutdown",
+  "version": "1.0.0",
+  "description": "Control your PC power state from your phone",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js --dev",
+    "test": "node --test tests/*.test.js",
+    "build": "pkg . --targets node18-win-x64 --output dist/auto-shutdown.exe"
+  },
+  "pkg": {
+    "assets": [
+      "public/**/*",
+      "resources/**/*",
+      "node_modules/node-systray/tray_*"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ]
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "node-systray": "*",
+    "node-windows": "^1.0.0-beta.8"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  }
+}
