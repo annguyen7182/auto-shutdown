@@ -14,7 +14,7 @@
     "assets": [
       "public/**/*",
       "resources/**/*",
-      "node_modules/systray2/tray_*"
+      "node_modules/systray2/traybin/**/*"
     ],
     "targets": [
       "node18-win-x64"

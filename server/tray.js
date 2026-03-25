@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const { exec } = require('child_process');
 const { getLocalIp } = require('./api');
 const { loadConfig, saveConfig } = require('./config');
@@ -6,8 +7,43 @@ const { isAutoStartEnabled, enableAutoStart, disableAutoStart } = require('./sta
 
 let systrayInstance = null;
 
+// When running inside a pkg binary, systray2's tray binary is trapped
+// inside the virtual snapshot filesystem and can't be spawned.
+// We extract it to a real temp directory before use.
+function ensureTrayBinary() {
+  const os = require('os');
+  const binName = 'tray_windows_release.exe';
+
+  // Check if already in cwd/traybin/ (works for both dev and extracted scenarios)
+  const cwdBin = path.join(process.cwd(), 'traybin', binName);
+  if (fs.existsSync(cwdBin)) return; // systray2 will find it here
+
+  // Inside pkg: __dirname is in the snapshot. Copy binary to a real location.
+  const snapshotBin = path.join(__dirname, '..', 'node_modules', 'systray2', 'traybin', binName);
+  if (!fs.existsSync(snapshotBin)) {
+    // Not in pkg, or binary not found — let systray2 handle it
+    return;
+  }
+
+  // Extract to temp dir and set CWD traybin
+  const extractDir = path.join(os.tmpdir(), 'auto-shutdown-tray');
+  const extractBinDir = path.join(extractDir, 'traybin');
+  const extractBinPath = path.join(extractBinDir, binName);
+
+  if (!fs.existsSync(extractBinPath)) {
+    fs.mkdirSync(extractBinDir, { recursive: true });
+    fs.copyFileSync(snapshotBin, extractBinPath);
+  }
+
+  // systray2 checks ./traybin/ relative to cwd first, so change cwd
+  process.chdir(extractDir);
+}
+
 async function createTray(options = {}) {
   const { onQuit, getPort = () => 3000 } = options;
+
+  // Ensure tray binary is accessible before loading systray2
+  ensureTrayBinary();
 
   const SysTray = require('systray2').default || require('systray2');
 
@@ -70,13 +106,11 @@ async function createTray(options = {}) {
 }
 
 function getIconBase64() {
-  // Try to load icon.ico from resources/ and convert to base64
   const icoPath = getIconPath();
   try {
-    const data = require('fs').readFileSync(icoPath);
+    const data = fs.readFileSync(icoPath);
     return data.toString('base64');
   } catch {
-    // Return empty string if icon not found (systray2 will use default)
     return '';
   }
 }
@@ -86,7 +120,7 @@ function getIconPath() {
   const pkgPath = path.join(path.dirname(process.execPath), 'resources', 'icon.ico');
 
   try {
-    require('fs').accessSync(pkgPath);
+    fs.accessSync(pkgPath);
     return pkgPath;
   } catch {
     return devPath;
