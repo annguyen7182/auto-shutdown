@@ -46,7 +46,7 @@ async function main() {
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
   createRoutes(app, {
-    testMode: false,
+    testMode: isDev,
     getPort: () => port,
   });
 
