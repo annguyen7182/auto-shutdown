@@ -5,8 +5,10 @@ const { loadConfig } = require('./config');
 const { createRoutes, getLocalIp } = require('./api');
 const { ensureFirewallRule } = require('./network');
 const { createTray, updateTrayUrl } = require('./tray');
+const { isAutoStartEnabled, enableAutoStart } = require('./startup');
 
 const isDev = process.argv.includes('--dev');
+
 
 async function main() {
   let elevated = isElevated();
@@ -105,6 +107,16 @@ async function main() {
     server.close();
     await new Promise(resolve => setTimeout(resolve, 2000));
     process.exit(0);
+  }
+
+  // Always ensure auto-start points to current exe path
+  if (!isDev && elevated) {
+    try {
+      await enableAutoStart(process.execPath);
+      console.log('Auto-start registered for', process.execPath);
+    } catch (err) {
+      console.error(`Failed to enable auto-start: ${err.message}`);
+    }
   }
 
   // Start system tray (skip in dev mode for now if systray2 not available)

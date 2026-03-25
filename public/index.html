@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#060608">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#f0ece6">
   <meta name="description" content="Control your PC power state remotely">
   <title>Auto Shutdown</title>
   <link rel="manifest" href="/manifest.json">
@@ -13,14 +13,12 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <!-- Ambient background -->
-  <div class="bg-grid"></div>
-  <div class="bg-scanline"></div>
-  <div class="bg-vignette"></div>
+  <!-- Subtle texture -->
+  <div class="bg-noise"></div>
 
   <!-- Toast container -->
   <div id="toast-container"></div>
@@ -51,50 +49,45 @@
   <main id="main-page" class="page active">
     <div class="hero-section">
       <div class="hero-badge">
-        <span class="badge-bracket">[</span>
-        <span class="badge-text">POWER CONTROL</span>
-        <span class="badge-bracket">]</span>
+        <span class="badge-text">Power Control</span>
       </div>
 
       <div class="actions-grid">
         <button class="action-btn sleep-btn" data-action="sleep" aria-label="Sleep">
-          <div class="btn-pulse-ring"></div>
-          <div class="btn-outer-ring"></div>
-          <div class="btn-glow"></div>
           <div class="btn-face">
-            <svg class="btn-icon" viewBox="0 0 48 48" fill="none">
-              <path d="M34 20c0-7.18-5.82-13-13-13a13 13 0 0 0-4.5.8C20.07 9.28 23 13.3 23 18c0 6.08-4.92 11-11 11-1.97 0-3.82-.52-5.42-1.43A13.003 13.003 0 0 0 21 36c7.18 0 13-5.82 13-13z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M30 7l2.5 2.5M35 12h3M32 17l2.5-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
-            </svg>
-            <span class="btn-label">SLEEP</span>
+            <div class="btn-icon-wrap">
+              <svg class="btn-icon" viewBox="0 0 48 48" fill="none">
+                <path d="M34 20c0-7.18-5.82-13-13-13a13 13 0 0 0-4.5.8C20.07 9.28 23 13.3 23 18c0 6.08-4.92 11-11 11-1.97 0-3.82-.52-5.42-1.43A13.003 13.003 0 0 0 21 36c7.18 0 13-5.82 13-13z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M30 7l2.5 2.5M35 12h3M32 17l2.5-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              </svg>
+            </div>
+            <span class="btn-label">Sleep</span>
           </div>
         </button>
 
         <button class="action-btn shutdown-btn" data-action="shutdown" aria-label="Shutdown">
-          <div class="btn-pulse-ring"></div>
-          <div class="btn-outer-ring"></div>
-          <div class="btn-glow"></div>
           <div class="btn-face">
-            <svg class="btn-icon" viewBox="0 0 48 48" fill="none">
-              <path d="M24 8v12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M16.5 12.2A13 13 0 1 0 31.5 12.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <span class="btn-label">SHUTDOWN</span>
+            <div class="btn-icon-wrap">
+              <svg class="btn-icon" viewBox="0 0 48 48" fill="none">
+                <path d="M24 8v12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M16.5 12.2A13 13 0 1 0 31.5 12.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="btn-label">Shut Down</span>
           </div>
         </button>
 
         <button class="action-btn restart-btn" data-action="restart" aria-label="Restart">
-          <div class="btn-pulse-ring"></div>
-          <div class="btn-outer-ring"></div>
-          <div class="btn-glow"></div>
           <div class="btn-face">
-            <svg class="btn-icon" viewBox="0 0 48 48" fill="none">
-              <path d="M34 18A12 12 0 0 0 14.5 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M10 8v8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M14 30a12 12 0 0 0 19.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M38 40v-8h-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="btn-label">RESTART</span>
+            <div class="btn-icon-wrap">
+              <svg class="btn-icon" viewBox="0 0 48 48" fill="none">
+                <path d="M34 18A12 12 0 0 0 14.5 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 8v8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 30a12 12 0 0 0 19.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M38 40v-8h-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="btn-label">Restart</span>
           </div>
         </button>
       </div>
@@ -115,14 +108,13 @@
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
       </button>
-      <h2>SETTINGS</h2>
-      <div class="header-accent"></div>
+      <h2>Settings</h2>
     </div>
 
     <div class="settings-body">
       <!-- Server Info -->
       <div class="settings-group" style="animation-delay: 0.05s">
-        <div class="group-label"><span class="label-dot"></span>SERVER</div>
+        <div class="group-label">Server</div>
         <div class="field-row">
           <label>Access URL</label>
           <input type="text" id="server-url" readonly class="field-input mono">
@@ -131,19 +123,19 @@
 
       <!-- Port Config -->
       <div class="settings-group" style="animation-delay: 0.1s">
-        <div class="group-label"><span class="label-dot"></span>PORT</div>
+        <div class="group-label">Port</div>
         <div class="field-row">
           <label>Port Number</label>
           <div class="field-inline">
             <input type="number" id="port-input" min="1024" max="65535" class="field-input mono" placeholder="3000">
-            <button class="save-btn" id="save-port-btn">SAVE</button>
+            <button class="save-btn" id="save-port-btn">Save</button>
           </div>
         </div>
       </div>
 
       <!-- Network Config -->
       <div class="settings-group" style="animation-delay: 0.15s">
-        <div class="group-label"><span class="label-dot"></span>NETWORK</div>
+        <div class="group-label">Network</div>
         <div class="field-row">
           <label>Interface</label>
           <select id="interface-select" class="field-input">
@@ -154,7 +146,7 @@
           <label>Mode</label>
           <div class="toggle-row">
             <button class="toggle-btn active" id="dhcp-toggle" data-mode="dhcp">DHCP</button>
-            <button class="toggle-btn" id="static-toggle" data-mode="static">STATIC</button>
+            <button class="toggle-btn" id="static-toggle" data-mode="static">Static</button>
           </div>
         </div>
         <div id="static-fields" class="static-fields hidden">
@@ -171,7 +163,7 @@
             <input type="text" id="gateway-input" class="field-input mono" placeholder="192.168.1.1" inputmode="decimal">
           </div>
         </div>
-        <button class="save-btn full-width" id="save-network-btn">APPLY NETWORK</button>
+        <button class="save-btn full-width" id="save-network-btn">Apply Network</button>
       </div>
     </div>
   </section>
@@ -183,8 +175,8 @@
       <p class="modal-title" id="modal-title">CONFIRM ACTION</p>
       <p class="modal-text" id="modal-text">Are you sure?</p>
       <div class="modal-actions">
-        <button class="modal-btn cancel-btn" id="modal-cancel">CANCEL</button>
-        <button class="modal-btn confirm-btn" id="modal-confirm">CONFIRM</button>
+        <button class="modal-btn cancel-btn" id="modal-cancel">Cancel</button>
+        <button class="modal-btn confirm-btn" id="modal-confirm">Confirm</button>
       </div>
     </div>
   </div>

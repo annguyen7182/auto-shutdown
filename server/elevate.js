@@ -14,7 +14,7 @@ function relaunchElevated() {
   const args = process.argv.slice(1);
 
   const psArgs = args.length > 0 ? ` -ArgumentList '${args.join("','")}'` : '';
-  const cmd = `Start-Process -FilePath '${exePath}'${psArgs} -Verb RunAs`;
+  const cmd = `Start-Process -FilePath '${exePath}'${psArgs} -Verb RunAs -WindowStyle Hidden`;
 
   try {
     execSync(`powershell -Command "${cmd}"`, { stdio: 'ignore' });

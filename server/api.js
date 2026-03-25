@@ -44,8 +44,10 @@ function createRoutes(app, options = {}) {
 
     res.json({ ok: true });
     setTimeout(() => {
-      execFile(command, args, (err) => {
+      console.log(`Executing: ${command} ${args.join(' ')}`);
+      execFile(command, args, (err, stdout, stderr) => {
         if (err) console.error(`Power command failed: ${err.message}`);
+        if (stderr) console.error(`Power stderr: ${stderr}`);
       });
     }, 500);
   }
@@ -55,11 +57,11 @@ function createRoutes(app, options = {}) {
   });
 
   app.post('/api/shutdown', (req, res) => {
-    execPower('shutdown', ['/s', '/t', '0'], res);
+    execPower('powershell', ['-Command', 'Stop-Computer -Force'], res);
   });
 
   app.post('/api/restart', (req, res) => {
-    execPower('shutdown', ['/r', '/t', '0'], res);
+    execPower('powershell', ['-Command', 'Restart-Computer -Force'], res);
   });
 
   app.get('/api/status', (req, res) => {

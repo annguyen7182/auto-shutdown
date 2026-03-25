@@ -14,9 +14,12 @@ async function isAutoStartEnabled() {
 }
 
 async function enableAutoStart(exePath) {
+  // Use VBS launcher to run the exe without a console window
+  const path = require('path');
+  const vbsPath = path.join(path.dirname(exePath), 'auto-shutdown.vbs');
   await execFileAsync('schtasks', [
     '/create', '/tn', TASK_NAME,
-    '/tr', `"${exePath}"`,
+    '/tr', `wscript.exe "${vbsPath}"`,
     '/sc', 'onlogon',
     '/rl', 'highest',
     '/f',
