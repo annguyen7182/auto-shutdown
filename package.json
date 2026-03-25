@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Control your PC power state from your phone",
   "main": "server/index.js",
+  "bin": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node server/index.js --dev",
